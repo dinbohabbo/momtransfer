@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoM Transfer Rank Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+    h1 { color: #2c3e50; }
+    label { display:block; margin-top: 10px; font-weight: bold; }
+    input, select { width: 300px; padding: 6px; margin-top: 5px; }
+    button { margin-top: 20px; padding: 10px 20px; cursor: pointer; background:#4a90e2; color:white; border:none; border-radius:4px;}
+    pre { background:white; padding:15px; border-radius:5px; margin-top:20px; }
+  </style>
+</head>
+<body>
+  <h1>Transfer Rank Calculator</h1>
+
+  <label>Username</label>
+  <input id="username" type="text">
+
+  <label>Main ID Join Date</label>
+  <input id="mainDate" type="date">
+
+  <label>2nd Division Badge Date</label>
+  <input id="secondDate" type="date">
+
+  <label>Agency</label>
+  <select id="agency"></select>
+
+  <label>Rank</label>
+  <select id="rank"></select>
+
+  <button onclick="calculate()">Check Eligibility</button>
+
+  <pre id="output"></pre>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
