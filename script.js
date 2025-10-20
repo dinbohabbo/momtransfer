@@ -4,38 +4,27 @@ const rankSelect = document.getElementById("rank");
 const output = document.getElementById("output");
 
 async function loadAgencies() {
-  try {
-    const res = await fetch(API + "?action=agencies"); // no headers
-    const data = await res.json();
-    agencySelect.innerHTML = '<option value="">-- Select Agency --</option>';
-    (data.agencies || []).forEach(a => {
-      const opt = document.createElement("option");
-      opt.value = a;
-      opt.textContent = a;
-      agencySelect.appendChild(opt);
-    });
-  } catch (err) {
-    console.error("agencies fetch failed:", err);
-    agencySelect.innerHTML = '<option value="">(failed to load)</option>';
-  }
+  const res = await fetch(API + "?action=agencies");   // no headers
+  const data = await res.json();
+  agencySelect.innerHTML = '<option value="">-- Select Agency --</option>';
+  (data.agencies || []).forEach(a => {
+    const o = document.createElement("option");
+    o.value = a; o.textContent = a;
+    agencySelect.appendChild(o);
+  });
 }
 
 async function loadRanks() {
   const agency = agencySelect.value;
   rankSelect.innerHTML = '<option value="">-- Select Rank --</option>';
   if (!agency) return;
-  try {
-    const res = await fetch(API + "?action=ranks&agency=" + encodeURIComponent(agency)); // no headers
-    const data = await res.json();
-    (data.ranks || []).forEach(r => {
-      const opt = document.createElement("option");
-      opt.value = r;
-      opt.textContent = r;
-      rankSelect.appendChild(opt);
-    });
-  } catch (err) {
-    console.error("ranks fetch failed:", err);
-  }
+  const res = await fetch(API + "?action=ranks&agency=" + encodeURIComponent(agency)); // no headers
+  const data = await res.json();
+  (data.ranks || []).forEach(r => {
+    const o = document.createElement("option");
+    o.value = r; o.textContent = r;
+    rankSelect.appendChild(o);
+  });
 }
 
 agencySelect.addEventListener("change", loadRanks);
@@ -50,19 +39,15 @@ async function calculate() {
   };
 
   output.textContent = "Checking...";
-  try {
-    const res = await fetch(API, {
-      method: "POST",
-      // IMPORTANT: use text/plain to avoid CORS preflight
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ action: "compute", payload })
-    });
-    const data = await res.json();
-    output.textContent = JSON.stringify(data, null, 2);
-  } catch (err) {
-    console.error("compute failed:", err);
-    output.textContent = "Error contacting server. Open DevTools (F12) → Console for details.";
-  }
+  const res = await fetch(API, {
+    method: "POST",
+    redirect: "follow",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({ action: "compute", payload })
+  });
+
+  const data = await res.json();
+  output.textContent = JSON.stringify(data, null, 2);
 }
 
 loadAgencies();
